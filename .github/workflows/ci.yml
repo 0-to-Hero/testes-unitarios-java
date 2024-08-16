@@ -32,8 +32,5 @@ jobs:
       - name: Gerar Relatório de Cobertura com JaCoCo
         run: ./mvnw jacoco:report
 
-      - name: Publicar Relatório de Cobertura
-        uses: actions/upload-artifact@v3
-        with:
-          name: relatorio-cobertura-jacoco
-          path: target/site/jacoco
+      - name: Publicar Resumo do Relatório de Cobertura
+        run: echo "## Relatório de Cobertura de Testes\n\n$(cat target/site/jacoco/index.html)" >> $GITHUB_STEP_SUMMARY
