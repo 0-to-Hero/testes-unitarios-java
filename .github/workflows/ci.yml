@@ -34,7 +34,13 @@ jobs:
 
       - name: Publicar Resumo do Relatório de Cobertura
         run: |
-          COVERAGE=$(grep -A 2 -m 1 '<td>Total</td>' target/site/jacoco/index.html | grep -Eo '[0-9]+(\.[0-9]+)?%' | head -n 1)
           echo "## Relatório de Cobertura de Testes" >> $GITHUB_STEP_SUMMARY
-          echo "**Cobertura Total:** $COVERAGE" >> $GITHUB_STEP_SUMMARY
-          echo "![Visualizar Relatório](https://github.com/${{ github.repository }}/blob/${{ github.sha }}/target/site/jacoco/index.html)" >> $GITHUB_STEP_SUMMARY
+          COVERAGE_LINE=$(grep -m 1 -A 1 '<tfoot>' target/site/jacoco/index.html)
+          COVERAGE_PERCENT=$(echo $COVERAGE_LINE | grep -oP '(?<=<td class="ctr2">)[^<]+')
+          echo "**Cobertura Total:** $COVERAGE_PERCENT%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Fazer upload do relatório de cobertura como artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: relatorio-cobertura
+          path: target/site/jacoco
