@@ -28,16 +28,6 @@ jobs:
           name: jacoco-report
           path: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
 
-      - name: Adiciona badage ao PR
-        id: jacoco
-        uses: madrapps/jacoco-report@v1.2
-        with:
-          paths: ${{ github.workspace }}/target/site/jacoco/jacoco.xml
-          token: ${{ secrets.PAC }}
-          min-coverage-overall: 80
-          min-coverage-changed-files: 80
-          title: Code Coverage
-
       - name: Salva a cobertura numa variavel
         run: |
           echo "TOTAL_COVERAGE=${{ steps.jacoco.outputs.coverage-overall }}" >> $GITHUB_ENV
