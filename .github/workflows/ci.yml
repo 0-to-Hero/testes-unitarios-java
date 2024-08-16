@@ -32,15 +32,14 @@ jobs:
       - name: Gerar Relatório de Cobertura com JaCoCo
         run: ./mvnw jacoco:report
 
-      - name: Publicar Resumo do Relatório de Cobertura
-        run: |
-          echo "## Relatório de Cobertura de Testes" >> $GITHUB_STEP_SUMMARY
-          COVERAGE_LINE=$(grep -m 1 -A 1 '<tfoot>' target/site/jacoco/index.html)
-          COVERAGE_PERCENT=$(echo $COVERAGE_LINE | grep -oP '(?<=<td class="ctr2">)[^<]+')
-          echo "**Cobertura Total:** $COVERAGE_PERCENT%" >> $GITHUB_STEP_SUMMARY
-
-      - name: Fazer upload do relatório de cobertura como artefato
-        uses: actions/upload-artifact@v3
+      - name: Publicar Relatório de Cobertura no Sumário
+        uses: dorny/paths-filter@v2
         with:
-          name: relatorio-cobertura
-          path: target/site/jacoco
+          filters: |
+            jacoco:
+              - 'target/site/jacoco/jacoco.xml'
+
+      - name: Mostrar Relatório de Cobertura no Sumário
+        uses: 'matheusvanzan/jacoco-report@v2'
+        with:
+          path: 'target/site/jacoco/jacoco.xml'
