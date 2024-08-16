@@ -5,6 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class CollectionsTest {
 
     @Test
@@ -63,4 +67,6 @@ public class CollectionsTest {
                 .hasMessageContaining("Invalid")
                 .hasNoCause();
     }
+
+
 }
